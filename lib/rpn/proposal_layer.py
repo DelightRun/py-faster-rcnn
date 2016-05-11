@@ -9,7 +9,7 @@ import caffe
 import numpy as np
 import yaml
 from fast_rcnn.config import cfg
-from generate_anchors import generate_anchors
+from .generate_anchors import generate_anchors
 from fast_rcnn.bbox_transform import bbox_transform_inv, clip_boxes
 from fast_rcnn.nms_wrapper import nms
 
@@ -74,14 +74,14 @@ class ProposalLayer(caffe.Layer):
         im_info = bottom[2].data[0, :]
 
         if DEBUG:
-            print 'im_size: ({}, {})'.format(im_info[0], im_info[1])
-            print 'scale: {}'.format(im_info[2])
+            print('im_size: ({}, {})'.format(im_info[0], im_info[1]))
+            print('scale: {}'.format(im_info[2]))
 
         # 1. Generate proposals from bbox deltas and shifted anchors
         height, width = scores.shape[-2:]
 
         if DEBUG:
-            print 'score map size: {}'.format(scores.shape)
+            print('score map size: {}'.format(scores.shape))
 
         # Enumerate all shifts
         shift_x = np.arange(0, width) * self._feat_stride

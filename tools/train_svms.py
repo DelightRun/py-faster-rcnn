@@ -108,8 +108,8 @@ class SVMTrainer(object):
                     cls_feat = feat[cls_inds, :]
                     self.trainers[j].append_pos(cls_feat)
 
-            print 'get_pos_examples: {:d}/{:d} {:.3f}s' \
-                  .format(i + 1, len(roidb), _t.average_time)
+            print('get_pos_examples: {:d}/{:d} {:.3f}s' \
+                  .format(i + 1, len(roidb), _t.average_time))
 
     def initialize_net(self):
         # Start all SVM parameters at zero
@@ -338,16 +338,16 @@ if __name__ == '__main__':
     out_dir = os.path.dirname(args.caffemodel)
 
     imdb = get_imdb(args.imdb_name)
-    print 'Loaded dataset `{:s}` for training'.format(imdb.name)
+    print('Loaded dataset `{:s}` for training'.format(imdb.name))
 
     # enhance roidb to contain flipped examples
     if cfg.TRAIN.USE_FLIPPED:
-        print 'Appending horizontally-flipped training examples...'
+        print('Appending horizontally-flipped training examples...')
         imdb.append_flipped_images()
-        print 'done'
+        print('done')
 
     SVMTrainer(net, imdb).train()
 
     filename = '{}/{}.caffemodel'.format(out_dir, out)
     net.save(filename)
-    print 'Wrote svm model to: {:s}'.format(filename)
+    print('Wrote svm model to: {:s}'.format(filename))

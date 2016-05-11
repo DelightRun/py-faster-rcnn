@@ -23,7 +23,7 @@ import pprint
 import numpy as np
 import sys, os
 import multiprocessing as mp
-import cPickle
+from six.movesfrom six.moves  import cPickle
 import shutil
 
 def parse_args():
@@ -59,9 +59,9 @@ def parse_args():
 
 def get_roidb(imdb_name, rpn_file=None):
     imdb = get_imdb(imdb_name)
-    print 'Loaded dataset `{:s}` for training'.format(imdb.name)
+    print('Loaded dataset `{:s}` for training'.format(imdb.name))
     imdb.set_proposal_method(cfg.TRAIN.PROPOSAL_METHOD)
-    print 'Set proposal method: {:s}'.format(cfg.TRAIN.PROPOSAL_METHOD)
+    print('Set proposal method: {:s}'.format(cfg.TRAIN.PROPOSAL_METHOD))
     if rpn_file is not None:
         imdb.config['rpn_file'] = rpn_file
     roidb = get_training_roidb(imdb)
@@ -112,7 +112,7 @@ def train_rpn(queue=None, imdb_name=None, init_model=None, solver=None,
     cfg.TRAIN.BBOX_REG = False  # applies only to Fast R-CNN bbox regression
     cfg.TRAIN.PROPOSAL_METHOD = 'gt'
     cfg.TRAIN.IMS_PER_BATCH = 1
-    print 'Init model: {}'.format(init_model)
+    print('Init model: {}'.format(init_model))
     print('Using config:')
     pprint.pprint(cfg)
 
@@ -120,9 +120,9 @@ def train_rpn(queue=None, imdb_name=None, init_model=None, solver=None,
     _init_caffe(cfg)
 
     roidb, imdb = get_roidb(imdb_name)
-    print 'roidb len: {}'.format(len(roidb))
+    print('roidb len: {}'.format(len(roidb)))
     output_dir = get_output_dir(imdb)
-    print 'Output will be saved to `{:s}`'.format(output_dir)
+    print('Output will be saved to `{:s}`'.format(output_dir))
 
     model_paths = train_net(solver, roidb, output_dir,
                             pretrained_model=init_model,
@@ -141,7 +141,7 @@ def rpn_generate(queue=None, imdb_name=None, rpn_model_path=None, cfg=None,
 
     cfg.TEST.RPN_PRE_NMS_TOP_N = -1     # no pre NMS filtering
     cfg.TEST.RPN_POST_NMS_TOP_N = 2000  # limit top boxes after NMS
-    print 'RPN model: {}'.format(rpn_model_path)
+    print('RPN model: {}'.format(rpn_model_path))
     print('Using config:')
     pprint.pprint(cfg)
 
