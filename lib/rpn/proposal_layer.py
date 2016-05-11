@@ -31,9 +31,9 @@ class ProposalLayer(caffe.Layer):
         self._num_anchors = self._anchors.shape[0]
 
         if DEBUG:
-            print 'feat_stride: {}'.format(self._feat_stride)
-            print 'anchors:'
-            print self._anchors
+            print('feat_stride: {}'.format(self._feat_stride))
+            print('anchors:')
+            print(self._anchors)
 
         # rois blob: holds R regions of interest, each is a 5-tuple
         # (n, x1, y1, x2, y2) specifying an image batch index n and a
