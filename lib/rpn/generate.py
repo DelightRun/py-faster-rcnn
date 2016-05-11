@@ -10,6 +10,7 @@ from utils.blob import im_list_to_blob
 from utils.timer import Timer
 import numpy as np
 import cv2
+from six.moves import xrange
 
 def _vis_proposals(im, dets, thresh=0.5):
     """Draw detected bounding boxes."""

@@ -15,7 +15,7 @@ import numpy as np
 import cv2
 import caffe
 from fast_rcnn.nms_wrapper import nms
-import pickle
+from six.moves import cPickle, xrange
 from utils.blob import im_list_to_blob
 import os
 

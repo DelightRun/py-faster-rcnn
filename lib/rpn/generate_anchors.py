@@ -6,6 +6,7 @@
 # --------------------------------------------------------
 
 import numpy as np
+from six.moves import xrange
 
 # Verify that we compute the same anchors as Shaoqing's matlab implementation:
 #
