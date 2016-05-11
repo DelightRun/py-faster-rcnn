@@ -13,7 +13,7 @@ import os
 import numpy as np
 import scipy.sparse
 import scipy.io as sio
-import pickle
+from six.moves import cPickle
 import json
 import uuid
 # COCO API
@@ -140,7 +140,7 @@ class coco(imdb):
 
         if osp.exists(cache_file):
             with open(cache_file, 'rb') as fid:
-                roidb = pickle.load(fid)
+                roidb = cPickle.load(fid)
             print('{:s} {:s} roidb loaded from {:s}'.format(self.name, method,
                                                             cache_file))
             return roidb
@@ -154,7 +154,7 @@ class coco(imdb):
         else:
             roidb = self._load_proposals(method, None)
         with open(cache_file, 'wb') as fid:
-            pickle.dump(roidb, fid, pickle.HIGHEST_PROTOCOL)
+            cPickle.dump(roidb, fid, cPickle.HIGHEST_PROTOCOL)
         print('wrote {:s} roidb to {:s}'.format(method, cache_file))
         return roidb
 
@@ -213,7 +213,7 @@ class coco(imdb):
         cache_file = osp.join(self.cache_path, self.name + '_gt_roidb.pkl')
         if osp.exists(cache_file):
             with open(cache_file, 'rb') as fid:
-                roidb = pickle.load(fid)
+                roidb = cPickle.load(fid)
             print('{} gt roidb loaded from {}'.format(self.name, cache_file))
             return roidb
 
@@ -221,7 +221,7 @@ class coco(imdb):
                     for index in self._image_index]
 
         with open(cache_file, 'wb') as fid:
-            pickle.dump(gt_roidb, fid, pickle.HIGHEST_PROTOCOL)
+            cPickle.dump(gt_roidb, fid, cPickle.HIGHEST_PROTOCOL)
         print('wrote gt roidb to {}'.format(cache_file))
         return gt_roidb
 
@@ -330,7 +330,7 @@ class coco(imdb):
         self._print_detection_eval_metrics(coco_eval)
         eval_file = osp.join(output_dir, 'detection_results.pkl')
         with open(eval_file, 'wb') as fid:
-            pickle.dump(coco_eval, fid, pickle.HIGHEST_PROTOCOL)
+            cPickle.dump(coco_eval, fid, cPickle.HIGHEST_PROTOCOL)
         print('Wrote COCO eval results to: {}'.format(eval_file))
 
     def _coco_results_one_category(self, boxes, cat_id):

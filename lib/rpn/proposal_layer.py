@@ -74,14 +74,14 @@ class ProposalLayer(caffe.Layer):
         im_info = bottom[2].data[0, :]
 
         if DEBUG:
-            print 'im_size: ({}, {})'.format(im_info[0], im_info[1])
-            print 'scale: {}'.format(im_info[2])
+            print('im_size: ({}, {})'.format(im_info[0], im_info[1]))
+            print('scale: {}'.format(im_info[2]))
 
         # 1. Generate proposals from bbox deltas and shifted anchors
         height, width = scores.shape[-2:]
 
         if DEBUG:
-            print 'score map size: {}'.format(scores.shape)
+            print('score map size: {}'.format(scores.shape))
 
         # Enumerate all shifts
         shift_x = np.arange(0, width) * self._feat_stride
