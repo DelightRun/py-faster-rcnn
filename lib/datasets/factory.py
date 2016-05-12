@@ -11,7 +11,13 @@ __sets = {}
 
 from datasets.pascal_voc import pascal_voc
 from datasets.coco import coco
+from datasets.deeppr import deeppr
 import numpy as np
+
+# Set up DeepPR
+for split in ['train', 'test']:
+    name = '{}_{}'.format('deeppr', split)
+    __sets[name] = (lambda split=split: deeppr(split))
 
 # Set up voc_<year>_<split> using selective search "fast" mode
 for year in ['2007', '2012']:
