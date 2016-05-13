@@ -23,7 +23,7 @@ import pprint
 import numpy as np
 import sys, os
 import multiprocessing as mp
-from six.movesfrom six.moves  import cPickle
+from six.moves import cPickle
 import shutil
 
 def parse_args():
