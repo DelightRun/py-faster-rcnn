@@ -83,7 +83,7 @@ def add_bbox_regression_targets(roidb):
         means = sums / class_counts
         stds = np.sqrt(squared_sums / class_counts - means ** 2)
 
-    print('bbox target means:'))
+    print('bbox target means:')
     print(means)
     print(means[1:, :].mean(axis=0)) # ignore bg class
     print('bbox target stdevs:')
