@@ -135,16 +135,16 @@ class deeppr(imdb):
         # Load object bounding boxes into a data frame.
         for ix, line in enumerate(lines):
             # Make pixel indexes 0-based
-            coor = map(int, line.strip().split())
-            x1 = float(coor[0])
-            y1 = float(coor[1])
-            x2 = float(coor[2])
-            y2 = float(coor[3])
+            rect = map(int, line.strip().split())
+            x = float(rect[0])
+            y = float(rect[1])
+            w = float(rect[2])
+            h = float(rect[3])
             cls = self._class_to_ind['license']
-            boxes[ix, :] = [x1, y1, x2, y2]
+            boxes[ix, :] = [x, y, x+w, y+h]
             gt_classes[ix] = cls
             overlaps[ix, cls] = 1.0
-            seg_areas[ix] = (x2 - x1 + 1) * (y2 - y1 + 1)
+            seg_areas[ix] = w * h
 
         overlaps = scipy.sparse.csr_matrix(overlaps)
 
