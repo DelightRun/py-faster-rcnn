@@ -4,7 +4,7 @@ import numpy as np
 import datetime
 import time
 from collections import defaultdict
-import mask
+from . import mask
 import copy
 
 class COCOeval:
@@ -212,7 +212,7 @@ class COCOeval:
 
         # sort dt highest score first, sort gt ignore last
         # gt = sorted(gt, key=lambda x: x['_ignore'])
-        gtind = [ind for (ind, g) in sorted(enumerate(gt), key=lambda (ind, g): g['_ignore']) ]
+        gtind = [ind for (ind, g) in sorted(enumerate(gt), key=lambda ind_g: ind_g[1]['_ignore']) ]
 
         gt = [gt[ind] for ind in gtind]
         dt = sorted(dt, key=lambda x: -x['score'])[0:maxDet]

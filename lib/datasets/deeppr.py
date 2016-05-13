@@ -12,8 +12,9 @@ import numpy as np
 import scipy.sparse
 import scipy.io as sio
 import utils.cython_bbox
-from six.moves import cPickle
+from six.moves import cPickle, xrange
 import subprocess
+from fast_rcnn.config import cfg
 
 class deeppr(imdb):
     def __init__(self, image_set, devkit_path=None):
@@ -119,7 +120,6 @@ class deeppr(imdb):
         """
         filename = os.path.join(self._data_path, 'Annotations', index + '.txt')
         # print 'Loading: {}'.format(filename)
-        # TODO change this
         with open(filename) as f:
             lines = f.readlines()
 
@@ -135,7 +135,7 @@ class deeppr(imdb):
         # Load object bounding boxes into a data frame.
         for ix, line in enumerate(lines):
             # Make pixel indexes 0-based
-            rect = map(int, line.strip().split())
+            rect = list(map(int, line.strip().split()))
             x = float(rect[0])
             y = float(rect[1])
             w = float(rect[2])

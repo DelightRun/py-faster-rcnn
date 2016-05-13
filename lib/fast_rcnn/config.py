@@ -20,6 +20,7 @@ import os
 import os.path as osp
 import numpy as np
 # `pip install easydict` if you don't have it
+import six
 from easydict import EasyDict as edict
 
 __C = edict()
@@ -229,9 +230,9 @@ def _merge_a_into_b(a, b):
     if type(a) is not edict:
         return
 
-    for k, v in a.iteritems():
+    for k, v in six.iteritems(a):
         # a must specify keys that are in b
-        if not b.has_key(k):
+        if not k in b:
             raise KeyError('{} is not a valid config key'.format(k))
 
         # the types must match, too
