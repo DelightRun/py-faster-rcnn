@@ -16,7 +16,7 @@ import utils.cython_bbox
 from six.moves import cPickle
 import subprocess
 import uuid
-from voc_eval import voc_eval
+from .voc_eval import voc_eval
 from fast_rcnn.config import cfg
 
 class pascal_voc(imdb):
