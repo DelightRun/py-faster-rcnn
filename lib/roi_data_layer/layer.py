@@ -10,6 +10,7 @@
 RoIDataLayer implements a Caffe Python layer.
 """
 
+import six
 import caffe
 from fast_rcnn.config import cfg
 from roi_data_layer.minibatch import get_minibatch
@@ -143,7 +144,7 @@ class RoIDataLayer(caffe.Layer):
         """Get blobs and copy them into this layer's top blob vector."""
         blobs = self._get_next_minibatch()
 
-        for blob_name, blob in blobs.iteritems():
+        for blob_name, blob in six.iteritems(blobs):
             top_ind = self._name_to_top_map[blob_name]
             # Reshape net's input blobs
             top[top_ind].reshape(*(blob.shape))
