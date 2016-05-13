@@ -9,6 +9,7 @@
 
 import numpy as np
 import cv2
+from six.moves import xrange
 
 def im_list_to_blob(ims):
     """Convert a list of images into a network input.

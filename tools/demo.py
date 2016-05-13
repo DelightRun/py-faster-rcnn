@@ -18,6 +18,7 @@ from fast_rcnn.config import cfg
 from fast_rcnn.test import im_detect
 from fast_rcnn.nms_wrapper import nms
 from utils.timer import Timer
+from six.moves import xrange
 import matplotlib.pyplot as plt
 import numpy as np
 import scipy.io as sio
