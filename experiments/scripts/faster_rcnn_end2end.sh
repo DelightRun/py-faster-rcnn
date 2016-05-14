@@ -29,6 +29,12 @@ case $DATASET in
     PT_DIR="pascal_voc"
     ITERS=70000
     ;;
+  deeppr)
+    TRAIN_IMDB="deeppr_train"
+    TEST_IMDB="deeppr_test"
+    PT_DIR="DeepPR"
+    ITERS=40000
+    ;;
   coco)
     # This is a very long and slow training schedule
     # You can probably use fewer iterations and reduce the
