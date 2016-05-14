@@ -236,7 +236,7 @@ layer {
   python_param {
     module: 'rpn.anchor_target_layer'
     layer: 'AnchorTargetLayer'
-    param_str: "'feat_stride': 16"
+    param_str: "'feat_stride': 16\n'scales': !!python/tuple [4, 8, 16]"
   }
 }
 layer {

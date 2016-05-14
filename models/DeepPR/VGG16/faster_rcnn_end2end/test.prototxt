@@ -468,7 +468,7 @@ layer {
   python_param {
     module: 'rpn.proposal_layer'
     layer: 'ProposalLayer'
-    param_str: "'feat_stride': 16"
+    param_str: "'feat_stride': 16\n'scales': !!python/tuple [4, 8, 16]"
   }
 }
 
