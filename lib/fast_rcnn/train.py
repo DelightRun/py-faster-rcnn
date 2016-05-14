@@ -60,7 +60,7 @@ class SolverWrapper(object):
 
         scale_bbox_params = (cfg.TRAIN.BBOX_REG and
                              cfg.TRAIN.BBOX_NORMALIZE_TARGETS and
-                             net.params.has_key('bbox_pred'))
+                             'bbox_pred' in net.params)
 
         if scale_bbox_params:
             # save original values
