@@ -27,13 +27,11 @@ case $DATASET in
     TRAIN_IMDB="voc_2007_trainval"
     TEST_IMDB="voc_2007_test"
     PT_DIR="pascal_voc"
-    ITERS=40000
     ;;
   deeppr)
     TRAIN_IMDB="deeppr_train"
     TEST_IMDB="deeppr_test"
     PT_DIR="DeepPR"
-    ITERS=40000
     ;;
   coco)
     echo "Not implemented: use experiments/scripts/faster_rcnn_end2end.sh for coco"
@@ -54,6 +52,7 @@ time ./tools/train_faster_rcnn_alt_opt.py --gpu ${GPU_ID} \
   --weights data/imagenet_models/${NET}.v2.caffemodel \
   --imdb ${TRAIN_IMDB} \
   --cfg experiments/cfgs/faster_rcnn_alt_opt.yml \
+  --set MODELS_DIR models/${PT_DIR}/ \
   ${EXTRA_ARGS}
 
 set +x

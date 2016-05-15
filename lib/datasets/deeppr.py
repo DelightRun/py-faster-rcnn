@@ -7,13 +7,13 @@
 
 import os
 from datasets.imdb import imdb
-import xml.dom.minidom as minidom
 import numpy as np
 import scipy.sparse
 import scipy.io as sio
 import utils.cython_bbox
 from six.moves import cPickle, xrange
 import subprocess
+from .deeppr_eval import deeppr_eval
 from fast_rcnn.config import cfg
 
 class deeppr(imdb):
@@ -154,28 +154,71 @@ class deeppr(imdb):
                 'flipped' : False,
                 'seg_areas' : seg_areas}
 
-    def _write_deeppr_results_file(self, all_boxes):
-        use_salt = self.config['use_salt']
-        comp_id = 'comp4'
-        if use_salt:
-            comp_id += '-{}'.format(os.getpid())
+    def _get_deeppr_results_file_template(self):
+        # DeepPR/results/DeepPR_det_test_plate.txt
+        return os.path.join(
+            self._devkit_path,
+            'results',
+            self.name + '_det_' + self._image_set + '_{:s}.txt')
 
-        # VOCdevkit/results/comp4-44503_det_test_aeroplane.txt
-        path = os.path.join(self._devkit_path, 'results', self.name, comp_id + '_')
+    def _write_deeppr_results_file(self, all_boxes):
         for cls_ind, cls in enumerate(self.classes):
             if cls == '__background__':
                 continue
             print('Writing {} results file'.format(cls))
-            filename = path + 'det_' + self._image_set + '_' + cls + '.txt'
+            filename = self._get_deeppr_results_file_template().format(cls)
             with open(filename, 'wt') as f:
                 for im_ind, index in enumerate(self.image_index):
                     dets = all_boxes[cls_ind][im_ind]
                     if dets == []:
                         continue
-                    # the VOCdevkit expects 1-based indices
                     for k in xrange(dets.shape[0]):
                         f.write('{:s} {:.3f} {:.1f} {:.1f} {:.1f} {:.1f}\n'.
                                 format(index, dets[k, -1],
-                                       dets[k, 0] + 1, dets[k, 1] + 1,
-                                       dets[k, 2] + 1, dets[k, 3] + 1))
-        return comp_id
+                                       dets[k, 0], dets[k, 1],
+                                       dets[k, 2], dets[k, 3]))
+
+    def _do_python_eval(self, output_dir = 'output'):
+        annopath = os.path.join(
+            self._devkit_path,
+            'data',
+            'Annotations',
+            '{:s}.txt')
+        imagesetfile = os.path.join(
+            self._devkit_path,
+            'data',
+            'ImageSets',
+            self._image_set + '.txt')
+        cachedir = os.path.join(self._devkit_path, 'annotations_cache')
+        aps = []
+        if not os.path.isdir(output_dir):
+            os.mkdir(output_dir)
+        for i, cls in enumerate(self._classes):
+            if cls == '__background__':
+                continue
+            filename = self._get_deeppr_results_file_template().format(cls)
+            rec, prec, ap = deeppr_eval(
+                filename, annopath, imagesetfile, cls, cachedir, ovthresh=0.5)
+            aps += [ap]
+            print('AP for {} = {:.4f}'.format(cls, ap))
+            with open(os.path.join(output_dir, cls + '_pr.pkl'), 'wb') as f:
+                cPickle.dump({'rec': rec, 'prec': prec, 'ap': ap}, f)
+        print('Mean AP = {:.4f}'.format(np.mean(aps)))
+        print('~~~~~~~~')
+        print('Results:')
+        for ap in aps:
+            print('{:.3f}'.format(ap))
+        print('{:.3f}'.format(np.mean(aps)))
+        print('~~~~~~~~')
+        print('')
+
+    def evaluate_detections(self, all_boxes, output_dir):
+        self._write_deeppr_results_file(all_boxes)
+        self._do_python_eval(output_dir)
+        if self.config['cleanup']:
+            for cls in self._classes:
+                if cls == '__background__':
+                    continue
+                filename = self._get_deeppr_results_file_template().format(cls)
+                os.remove(filename)
+
