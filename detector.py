@@ -17,10 +17,8 @@ from tools import _init_paths
 from fast_rcnn.config import cfg
 from fast_rcnn.test import im_detect
 from fast_rcnn.nms_wrapper import nms
-from utils.timer import Timer
 from six.moves import xrange
 import numpy as np
-import scipy.io as sio
 import caffe, os, sys, cv2
 
 CLASSES = ('__background__','license')
@@ -36,7 +34,7 @@ NMS_THRESH = 0.3
 cfg.TEST.HAS_RPN = True  # Use RPN for proposals
 cfg.MODELS_DIR = cfg.MODELS_DIR.replace('pascal_voc', 'DeepPR')
 cfg.net = 'zf'
-cfg.cpu_mode = 'True'
+cfg.cpu_mode = True
 
 prototxt = os.path.join(cfg.MODELS_DIR, NETS[cfg.net][0],
                         'faster_rcnn_alt_opt', 'faster_rcnn_test.pt')
@@ -50,8 +48,7 @@ if cfg.cpu_mode:
     caffe.set_mode_cpu()
 else:
     caffe.set_mode_gpu()
-    caffe.set_device(args.gpu_id)
-    cfg.GPU_ID = args.gpu_id
+    caffe.set_device(cfg.gpu_id)
 
 net = caffe.Net(prototxt, caffemodel, caffe.TEST)
 
@@ -81,9 +78,9 @@ def detect(image):
 
 if __name__ == '__main__':
     import matplotlib.pyplot as plt
-    
+
     if len(sys.argv) != 2:
-        printf('Usage: python detector.py image')
+        print('Usage: python detector.py image')
         sys.exit()
 
     regions = detect(cv2.imread(sys.argv[1]))
@@ -95,5 +92,5 @@ if __name__ == '__main__':
         for r, s in regions[cls]:
             plt.imshow(r[:,:,::-1])
             print('\tscore = %f' % s)
-            
+
     plt.show()
