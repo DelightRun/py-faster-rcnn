@@ -105,7 +105,7 @@ def parse_args():
                         default=0, type=int)
     parser.add_argument('--cpu', dest='cpu_mode',
                         help='Use CPU mode (overrides --gpu)',
-                        action='store_true')
+                        default=True, action='store_true')
     parser.add_argument('--net', dest='demo_net', help='Network to use [vgg16]',
                         choices=NETS.keys(), default='vgg16')
 
