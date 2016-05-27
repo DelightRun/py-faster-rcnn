@@ -32,7 +32,6 @@ CONF_THRESH = 0.9
 NMS_THRESH = 0.3
 
 cfg.TEST.HAS_RPN = True  # Use RPN for proposals
-cfg.MODELS_DIR = cfg.MODELS_DIR.replace('pascal_voc', 'DeepPR')
 cfg.net = 'zf'
 cfg.cpu_mode = True
 
