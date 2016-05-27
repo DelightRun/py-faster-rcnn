@@ -13,7 +13,7 @@ Demo script showing detections in sample images.
 See README.md for installation instructions before running.
 """
 
-from tools import _init_paths
+from .tools import _init_paths
 from fast_rcnn.config import cfg
 from fast_rcnn.test import im_detect
 from fast_rcnn.nms_wrapper import nms
@@ -76,22 +76,3 @@ def detect(image):
         regions[cls] = [(get_region(dets[i, :4]), dets[i, -1]) for i in inds]
 
     return regions
-
-if __name__ == '__main__':
-    import matplotlib.pyplot as plt
-
-    if len(sys.argv) != 2:
-        print('Usage: python detector.py image')
-        sys.exit()
-
-    regions = detect(cv2.imread(sys.argv[1]))
-
-    for cls in regions:
-        print('%s:' % cls)
-
-        print(regions[cls])
-        for r, s in regions[cls]:
-            plt.imshow(r[:,:,::-1])
-            print('\tscore = %f' % s)
-
-    plt.show()
