@@ -14,6 +14,7 @@ See README.md for installation instructions before running.
 """
 
 from .tools import _init_paths
+=======
 from fast_rcnn.config import cfg
 from fast_rcnn.test import im_detect
 from fast_rcnn.nms_wrapper import nms
@@ -33,7 +34,8 @@ NMS_THRESH = 0.3
 
 cfg.TEST.HAS_RPN = True  # Use RPN for proposals
 cfg.net = 'zf'
-cfg.cpu_mode = True
+cfg.cpu_mode = False
+cfg.gpu_id = 0
 
 prototxt = os.path.join(cfg.MODELS_DIR, NETS[cfg.net][0],
                         'faster_rcnn_alt_opt', 'faster_rcnn_test.pt')
